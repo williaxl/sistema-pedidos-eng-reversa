@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../models/Pedido.php';
+
 class PedidoSingleton {
 
     private static $instance = null;
@@ -14,7 +16,7 @@ class PedidoSingleton {
             self::$instance = new PedidoSingleton();
         }
 
-        return self::$instance;
+        return self::$instance->pedido;
     }
 
     public function getPedido() {
