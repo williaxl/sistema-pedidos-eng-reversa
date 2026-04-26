@@ -4,7 +4,7 @@ async function adicionar() {
   let produto = document.getElementById("produto").value;
   let qtd = document.getElementById("qtd").value;
 
-  if (qtd <= 0 || qtd === "") {
+  if (qtd === "" || parseInt(qtd) <= 0) {
     alert("Quantidade inválida");
     return;
   }
@@ -57,28 +57,34 @@ async function atualizarLista() {
   }
 }
 
-function finalizar() {
-  alert("Pedido enviado para backend!");
+async function finalizar() {
+  try {
+    let res = await fetch(`${BASE_URL}/backend/api.php?action=finalizar`);
+    let data = await res.json();
+    alert(`Pedido finalizado! Total: R$ ${data.totalFinal}`);
+    atualizarLista();
+  } catch (e) {
+    console.log("Erro finalizar:", e);
+  }
 }
 
-// WhatsApp
 function enviarWhatsApp() {
-  let mensagem = "Pedido:%0A";
-
   fetch(`${BASE_URL}/backend/api.php?action=listar`)
-    .then(res => res.text())
-    .then(text => {
-      let data = JSON.parse(text);
+    .then(res => res.json())
+    .then(data => {
+      if (!data.itens || data.itens.length === 0) {
+        alert("Nenhum item no pedido!");
+        return;
+      }
 
-      data.itens.forEach(item => {
-        mensagem += `- ${item.produto} (x${item.quantidade})%0A`;
-      });
+      let linhas = data.itens.map(item =>
+        `- ${item.produto} (x${item.quantidade})`
+      ).join("\n");
 
-      mensagem += `%0ATotal: R$ ${data.total}`;
-
+      let mensagem = `Pedido:\n${linhas}\n\nTotal: R$ ${data.total}`;
       let numero = "5585999999999";
 
-      window.open(`https://wa.me/${numero}?text=${mensagem}`, "_blank");
+      window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensagem)}`, "_blank");
     })
     .catch(err => console.log("Erro WhatsApp:", err));
 }
