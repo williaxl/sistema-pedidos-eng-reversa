@@ -9,6 +9,10 @@ class Pedido {
         $this->id = $id;
     }
 
+    public function getId() {
+        return $this->id;
+    }
+
     public function adicionarItem($item) {
         $this->itens[] = $item;
         $this->calcularTotal();
