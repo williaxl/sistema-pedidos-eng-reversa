@@ -1,6 +1,6 @@
 <?php
 
-class ItemPedido {
+class ItemPedido implements JsonSerializable {
     private $produto;
     private $quantidade;
     private $preco;
@@ -25,5 +25,13 @@ class ItemPedido {
 
     public function getSubtotal() {
         return $this->quantidade * $this->preco;
+    }
+
+    public function jsonSerialize(): mixed {
+        return [
+            "produto" => $this->produto,
+            "quantidade" => $this->quantidade,
+            "preco" => $this->preco
+        ];
     }
 }
