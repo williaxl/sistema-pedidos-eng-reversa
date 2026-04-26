@@ -28,30 +28,33 @@ class PedidoController {
             "total" => $this->pedido->getTotal()
         ]);
     }
+
     public function adicionar($tipoProduto, $quantidade) {
 
-    $produto = ProdutoFactory::criar($tipoProduto);
+        $produto = ProdutoFactory::criar($tipoProduto);
 
-    $item = new ItemPedido(
-        $produto->getNome(),
-        $quantidade,
-        $produto->getPreco()
-    );
+        $item = new ItemPedido(
+            $produto->getNome(),
+            $quantidade,
+            $produto->getPreco()
+        );
 
-    $this->pedido->adicionarItem($item);
+        $this->pedido->adicionarItem($item);
+        $_SESSION['pedido'] = serialize($this->pedido);
 
-    echo json_encode(["mensagem" => "Item adicionado"]);
-}
+        echo json_encode(["mensagem" => "Item adicionado"]);
+    }
 
     public function finalizar() {
         $total = $this->pedido->getTotal();
         $totalFinal = $this->desconto->calcular($total);
         if (class_exists('Subject') && class_exists('LoggerObserver')) {
-    $subject = new Subject();
-    $subject->addObserver(new LoggerObserver());
-    $subject->notify($this->pedido);
-}
+            $subject = new Subject();
+            $subject->addObserver(new LoggerObserver());
+            $subject->notify($this->pedido);
+        }
         $this->repo->salvar($this->pedido);
+        PedidoSingleton::limpar();
 
         echo json_encode([
             "total" => $total,
