@@ -1,79 +1,126 @@
 # Sistema de Pedidos - Engenharia Reversa
 
-## 🎓 Disciplina
-Arquitetura de Sistemas  
-**Professor:** Dr. Renato William Rodrigues de Souza  
-**Curso:** Análise e Desenvolvimento de Sistemas  
-**Instituição:** IFCE - Campus Boa Viagem  
+Projeto desenvolvido para a disciplina de Programação Web I (IFCE - Campus Boa Viagem).
+
+## Objetivo
+Evoluir um sistema de pedidos simples para uma arquitetura profissional com backend em PHP, frontend integrado, padrões de projeto e persistência de dados.
 
 ---
 
-## Sobre o Projeto
-
-Este projeto consiste em um sistema de pedidos simples desenvolvido em HTML, CSS e JavaScript.
-
- **Importante:**  
-O sistema foi propositalmente desenvolvido com problemas de organização, design e arquitetura.
-
----
-
-## Objetivo da Atividade
-
-O objetivo é aplicar conceitos de:
-
-- Arquitetura de Software  
-- Design de Software  
-- Engenharia Reversa  
-- Padrões de Projeto (Factory e Singleton)  
-- Versionamento com Git  
+## Tecnologias
+- HTML, CSS, JavaScript
+- PHP (API backend)
+- Docker
+- JSON (persistência)
 
 ---
 
-## Desafio
+## Arquitetura
 
-Você deverá:
+O sistema foi estruturado em camadas:
 
-1. Analisar o sistema existente  
-2. Identificar problemas estruturais  
-3. Propor melhorias  
-4. Refatorar o código  
-5. Aplicar padrões de projeto  
-6. Utilizar Git corretamente durante o processo  
-
----
-
-## O que analisar
-
-Durante a análise, identifique problemas relacionados a:
-
-- Baixa coesão  
-- Alto acoplamento  
-- Falta de separação de responsabilidades  
-- Duplicação de código  
-- Organização do sistema  
+- Models: entidades do sistema (Produto, Pedido, ItemPedido)
+- Controllers: controle da API
+- Services: regras de negócio (Strategy de desconto)
+- Repositories: persistência em JSON
+- Frontend: interface HTML + JS (fetch API)
 
 ---
 
-## Implementações obrigatórias
-
-Você deve aplicar no sistema:
+## Padrões de Projeto
 
 ### Factory
-Utilizar para criação de objetos (ex: produtos, pedidos)
+Responsável pela criação de objetos do sistema.
 
 ### Singleton
-Utilizar para garantir uma única instância (ex: controle do pedido ou persistência)
+Garante uma única instância do pedido durante a execução.
+
+### Strategy
+Responsável pela aplicação de descontos no pedido.
+
+### Repository
+Responsável pela persistência dos dados em JSON.
 
 ---
 
-## Como executar o projeto
+## Funcionalidades
 
-1. Baixe ou clone o repositório  
-2. Abra o arquivo `index.html` no navegador  
+- Adicionar produtos ao pedido
+- Listar itens do pedido
+- Calcular total automaticamente
+- Aplicar desconto (Strategy)
+- Finalizar pedido
+- Persistência em JSON
 
 ---
 
-## 💻 Como clonar o repositório
+## API
 
-```bash
-git clone LINK_DO_REPOSITORIO
+- GET  ?action=listar → lista pedidos
+- POST ?action=adicionar → adiciona item
+- GET  ?action=finalizar → finaliza pedido
+
+---
+
+## Docker
+
+Executar o sistema:
+
+docker-compose up -d
+
+Acesso:
+http://localhost:8000
+
+---
+
+## Estrutura do Projeto
+
+backend/
+frontend/
+models/
+services/
+controllers/
+repositories/
+data/
+
+---
+
+## Observação
+
+Este projeto foi desenvolvido com foco em evolução arquitetural, aplicando conceitos de engenharia de software como separação de responsabilidades, padrões de projeto e organização em camadas.
+
+---
+
+## Autor
+Projeto acadêmico - IFCE Boa Viagem
+
+---
+
+## Justificativa Técnica
+
+1. Problemas resolvidos:
+- Código monolítico refatorado para arquitetura em camadas
+- Remoção de lógica duplicada
+- Separação de responsabilidades
+
+2. Melhoria da arquitetura:
+- Implementação de backend em PHP
+- Separação frontend/backend
+- Uso de Repository para persistência
+
+3. Padrões aplicados:
+- Factory: criação centralizada de produtos
+- Singleton: controle único de pedido
+- Strategy: aplicação de descontos
+- Repository: persistência de dados
+
+4. Integração frontend/backend:
+- Comunicação via fetch API
+- Backend exposto via endpoints PHP
+
+5. Dificuldades:
+- Limitações do ambiente Termux
+- Ajustes de integração entre camadas
+
+6. Papel do Docker:
+- Garantir ambiente padronizado e reprodutível

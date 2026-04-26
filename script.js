@@ -1,99 +1,63 @@
-let itens = [];
-let total = 0;
-
-function adicionar() {
+async function adicionar() {
   let produto = document.getElementById("produto").value;
   let qtd = document.getElementById("qtd").value;
 
-  if (qtd == "" || qtd <= 0) {
+  if (qtd <= 0 || qtd === "") {
     alert("Quantidade inválida");
+    return;
   }
 
-  let preco = 0;
-
-  if (produto == "pastel") preco = 5;
-  if (produto == "caldo") preco = 7;
-  if (produto == "refrigerante") preco = 4;
-  if (produto == "suco") preco = 6;
-
-  let subtotal = preco * qtd;
-
-  itens.push({
-    produto: produto,
-    qtd: qtd,
-    subtotal: subtotal
+  await fetch("backend/api.php?action=adicionar", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: `produto=${produto}&quantidade=${qtd}`
   });
 
   atualizarLista();
 }
 
-function atualizarLista() {
+async function atualizarLista() {
+  let res = await fetch("backend/api.php?action=listar");
+  let data = await res.json();
+
   let lista = document.getElementById("lista");
   lista.innerHTML = "";
 
-  total = 0;
+  let total = 0;
 
-  for (let i = 0; i < itens.length; i++) {
-    let item = itens[i];
-
+  data.itens.forEach(item => {
     let li = document.createElement("li");
-    li.innerHTML = item.produto + " | Qtd: " + item.qtd + " | R$ " + item.subtotal;
-
+    li.innerHTML = item.produto + " | Qtd: " + item.quantidade + " | Subtotal: R$ " + item.preco * item.quantidade;
     lista.appendChild(li);
 
-    total = total + item.subtotal;
-  }
+    total += item.preco * item.quantidade;
+  });
 
   document.getElementById("total").innerText = total;
-
-  salvarTotal();
-}
-
-function salvarTotal() {
-  // duplicação de responsabilidade
-  localStorage.setItem("total", total);
 }
 
 function finalizar() {
-  let desconto = 0;
-
-  if (total > 100) {
-    desconto = total * 0.2;
-  } else if (total > 50) {
-    desconto = total * 0.1;
-  }
-
-  let taxa = total * 0.05;
-
-  let totalFinal = total - desconto + taxa;
-
-  alert("Total final: " + totalFinal);
-
-  localStorage.setItem("ultimoPedido", totalFinal);
-
-  limparTudo();
+  alert("Pedido enviado para backend!");
 }
 
-function limparTudo() {
-  itens = [];
-  total = 0;
+// Envio do pedido via WhatsApp
+function enviarWhatsApp() {
+  let mensagem = "Pedido:%0A";
 
-  document.getElementById("lista").innerHTML = "";
-  document.getElementById("total").innerText = 0;
-}
+  fetch("backend/api.php?action=listar")
+    .then(res => res.json())
+    .then(data => {
 
-function removerUltimo() {
-  itens.pop();
-  atualizarLista();
-}
+      data.itens.forEach(item => {
+        mensagem += `- ${item.produto} (x${item.quantidade})%0A`;
+      });
 
-// função duplicada de cálculo (problema proposital)
-function calcularTotal() {
-  let soma = 0;
+      mensagem += `%0ATotal: R$ ${data.total}`;
 
-  for (let i = 0; i < itens.length; i++) {
-    soma += itens[i].subtotal;
-  }
+      let numero = "5585999999999"; // trocar pelo número do estabelecimento
 
-  return soma;
+      window.open(`https://wa.me/${numero}?text=${mensagem}`, "_blank");
+    });
 }
