@@ -1,126 +1,127 @@
 # Sistema de Pedidos - Engenharia Reversa
 
-Projeto desenvolvido para a disciplina de Programação Web I (IFCE - Campus Boa Viagem).
+Projeto desenvolvido para a disciplina de Arquitetura de Sistemas (IFCE - Campus Boa Viagem).
+
+---
 
 ## Objetivo
-Evoluir um sistema de pedidos simples para uma arquitetura profissional com backend em PHP, frontend integrado, padrões de projeto e persistência de dados.
+
+O sistema tem como objetivo gerenciar pedidos de uma pastelaria, permitindo a seleção de produtos, cálculo automático de valores e finalização do pedido.
+
+O projeto foi evoluído a partir de uma implementação simples em JavaScript para uma arquitetura em camadas com backend em PHP, aplicando padrões de projeto e separação de responsabilidades.
 
 ---
 
-## Tecnologias
-- HTML, CSS, JavaScript
-- PHP (API backend)
-- Docker
-- JSON (persistência)
+## Tecnologias Utilizadas
+
+- HTML, CSS, JavaScript (Frontend)
+- PHP (Backend / API)
+- Sessão PHP (persistência de dados)
+- Render (deploy)
 
 ---
 
-## Arquitetura
+## Arquitetura do Sistema
 
-O sistema foi estruturado em camadas:
+O sistema foi reorganizado seguindo uma arquitetura em camadas:
 
-- Models: entidades do sistema (Produto, Pedido, ItemPedido)
-- Controllers: controle da API
-- Services: regras de negócio (Strategy de desconto)
-- Repositories: persistência em JSON
-- Frontend: interface HTML + JS (fetch API)
+- **Models** → Entidades do sistema (Produto, Pedido, ItemPedido)
+- **Controllers** → Controle da API e fluxo da aplicação
+- **Services** → Regras de negócio e padrões de projeto
+- **Repositories** → Persistência dos dados
+- **Frontend** → Interface web consumindo a API via fetch
+
+O frontend se comunica com o backend por meio de requisições HTTP (API PHP centralizada).
 
 ---
 
-## Padrões de Projeto
+## Evolução do Sistema (Engenharia Reversa)
+
+### Versão inicial (legado)
+- Lógica concentrada em JavaScript
+- Manipulação direta do DOM
+- Uso de estruturas globais
+- Ausência de backend
+
+### Versão atual (refatorada)
+- Backend em PHP estruturado em camadas
+- Separação entre frontend e backend
+- Uso de padrões de projeto
+- Persistência de dados via sessão PHP
+- Comunicação via API
+
+---
+
+## Padrões de Projeto Aplicados
 
 ### Factory
-Responsável pela criação de objetos do sistema.
+Responsável pela criação centralizada de objetos Produto.
 
 ### Singleton
-Garante uma única instância do pedido durante a execução.
+Garante uma única instância do Pedido durante a execução da aplicação, persistida via sessão PHP.
 
 ### Strategy
-Responsável pela aplicação de descontos no pedido.
+Define a lógica de aplicação de descontos no pedido.
+
+### Observer
+Implementado com Subject e LoggerObserver para registrar eventos ao finalizar pedidos.
 
 ### Repository
-Responsável pela persistência dos dados em JSON.
+Responsável pela persistência e manipulação dos dados armazenados.
 
 ---
 
 ## Funcionalidades
 
 - Adicionar produtos ao pedido
-- Listar itens do pedido
+- Listar itens adicionados
 - Calcular total automaticamente
-- Aplicar desconto (Strategy)
+- Aplicar desconto na finalização
 - Finalizar pedido
-- Persistência em JSON
+- Enviar resumo do pedido via WhatsApp
+- Persistência de dados via sessão PHP
 
 ---
 
-## API
+## API (Backend PHP)
 
-- GET  ?action=listar → lista pedidos
-- POST ?action=adicionar → adiciona item
-- GET  ?action=finalizar → finaliza pedido
+O backend utiliza um endpoint único controlado por parâmetro `action`:
 
----
-
-## Docker
-
-Executar o sistema:
-
-docker-compose up -d
-
-Acesso:
-http://localhost:8000
+- `GET ?action=listar` → retorna itens do pedido
+- `POST ?action=adicionar` → adiciona item ao pedido
+- `GET ?action=finalizar` → finaliza o pedido
 
 ---
 
 ## Estrutura do Projeto
 
 backend/
-frontend/
-models/
-services/
-controllers/
-repositories/
-data/
+  controllers/
+  models/
+  services/
+  repositories/
+
+index.html
+script.js
+style.css
 
 ---
 
-## Observação
+## Observações Técnicas
 
-Este projeto foi desenvolvido com foco em evolução arquitetural, aplicando conceitos de engenharia de software como separação de responsabilidades, padrões de projeto e organização em camadas.
+- O sistema foi adaptado para funcionar em ambiente de deploy (Render)
+- Comunicação frontend/backend via fetch API
+- Estrutura modular para facilitar manutenção e expansão
+- Aplicação de conceitos de engenharia de software (coesão e baixo acoplamento)
 
 ---
 
 ## Autor
-Projeto acadêmico - IFCE Boa Viagem
+
+Projeto acadêmico – IFCE Boa Viagem
 
 ---
 
-## Justificativa Técnica
+## Conclusão
 
-1. Problemas resolvidos:
-- Código monolítico refatorado para arquitetura em camadas
-- Remoção de lógica duplicada
-- Separação de responsabilidades
-
-2. Melhoria da arquitetura:
-- Implementação de backend em PHP
-- Separação frontend/backend
-- Uso de Repository para persistência
-
-3. Padrões aplicados:
-- Factory: criação centralizada de produtos
-- Singleton: controle único de pedido
-- Strategy: aplicação de descontos
-- Repository: persistência de dados
-
-4. Integração frontend/backend:
-- Comunicação via fetch API
-- Backend exposto via endpoints PHP
-
-5. Dificuldades:
-- Limitações do ambiente Termux
-- Ajustes de integração entre camadas
-
-6. Papel do Docker:
-- Garantir ambiente padronizado e reprodutível
+O sistema evoluiu de uma aplicação monolítica em JavaScript para uma arquitetura em camadas baseada em PHP, aplicando padrões de projeto e boas práticas de engenharia de software, melhorando significativamente a organização, escalabilidade e manutenção do código.
