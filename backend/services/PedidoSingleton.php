@@ -8,7 +8,15 @@ class PedidoSingleton {
     private $pedido;
 
     private function __construct() {
-        $this->pedido = new Pedido(1);
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (isset($_SESSION['pedido'])) {
+            $this->pedido = unserialize($_SESSION['pedido']);
+        } else {
+            $this->pedido = new Pedido(1);
+        }
     }
 
     public static function getInstance() {
@@ -24,6 +32,15 @@ class PedidoSingleton {
     }
 
     public function adicionar($item) {
-    $this->pedido->adicionarItem($item);
-}
+        $this->pedido->adicionarItem($item);
+        $_SESSION['pedido'] = serialize($this->pedido);
+    }
+
+    public static function limpar() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        unset($_SESSION['pedido']);
+        self::$instance = null;
+    }
 }
