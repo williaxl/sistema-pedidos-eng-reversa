@@ -1,11 +1,13 @@
 <?php
-
-require_once '../models/Pedido.php';
-require_once '../models/ItemPedido.php';
-require_once '../models/Produto.php';
-require_once '../repositories/PedidoRepository.php';
-require_once '../services/SemDesconto.php';
-
+require_once __DIR__ . '/../services/PedidoSingleton.php';
+require_once __DIR__ . '/../services/ProdutoFactory.php';
+require_once __DIR__ . '/../services/Subject.php';
+require_once __DIR__ . '/../services/LoggerObserver.php';
+require_once __DIR__ . '/../models/Pedido.php';
+require_once __DIR__ . '/../models/ItemPedido.php';
+require_once __DIR__ . '/../models/Produto.php';
+require_once __DIR__ . '/../repositories/PedidoRepository.php';
+require_once __DIR__ . '/../services/SemDesconto.php';
 class PedidoController {
 
     private $pedido;
@@ -44,9 +46,11 @@ class PedidoController {
     public function finalizar() {
         $total = $this->pedido->getTotal();
         $totalFinal = $this->desconto->calcular($total);
-$this->subject = new Subject();
-$this->subject->addObserver(new LoggerObserver());
-$this->subject->notify($this->pedido);
+        if (class_exists('Subject') && class_exists('LoggerObserver')) {
+    $subject = new Subject();
+    $subject->addObserver(new LoggerObserver());
+    $subject->notify($this->pedido);
+}
         $this->repo->salvar($this->pedido);
 
         echo json_encode([
