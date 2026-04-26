@@ -61,3 +61,7 @@ function enviarWhatsApp() {
       window.open(`https://wa.me/${numero}?text=${mensagem}`, "_blank");
     });
 }
+
+window.adicionar = adicionar;
+window.finalizar = finalizar;
+window.enviarWhatsApp = enviarWhatsApp;
