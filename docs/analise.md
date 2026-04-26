@@ -1,7 +1,8 @@
 PRÁTICA ORIENTADA 01
+
 Arquitetura de Sistemas – IFCE Campus Boa Viagem
-Tema
-Engenharia Reversa e Análise de Design de Software
+Tema: Engenharia Reversa e Análise de Design de Software
+
 Parte 1 – Compreensão do Sistema
 O sistema tem como objetivo gerenciar pedidos de uma pastelaria, permitindo ao usuário selecionar produtos, informar a quantidade e visualizar o total da compra.
 As principais funcionalidades do sistema são:
@@ -15,6 +16,7 @@ Um seletor de produtos
 Um campo de entrada para quantidade
 Botões para adicionar itens e finalizar o pedido
 Visualização dinâmica da lista de itens e do total
+
 Parte 2 – Identificação de Elementos
 Funções principais
 adicionar(): adiciona um item ao pedido
@@ -36,6 +38,7 @@ Mesmo sem orientação a objetos, é possível identificar:
 Produto
 ItemPedido
 Pedido
+
 Parte 3 – Arquitetura
 O sistema não possui uma arquitetura bem definida.
 Justificativa:
@@ -47,6 +50,7 @@ Classificação:
 Pequeno porte
 Monolítico
 Estrutura procedural
+
 Parte 4 – Modelagem (Diagrama de Classes)
 Classes identificadas:
 Produto
@@ -70,6 +74,7 @@ Relacionamentos:
 Um Pedido possui vários ItemPedido
 Um ItemPedido possui um Produto
 (O diagrama UML deve ser inserido como imagem ou link)
+
 Parte 5 – Análise de Problemas
 Coesão:
 As funções apresentam baixa coesão, pois executam múltiplas responsabilidades. Exemplo: atualizarLista() manipula o DOM, calcula o total e salva dados.
@@ -88,6 +93,7 @@ Organização geral:
 Código concentrado em um único arquivo
 Ausência de modularização
 Baixa legibilidade e manutenção dificultada
+
 Parte 6 – Propostas de Melhoria
 Separar o sistema em camadas (interface, lógica de negócio e dados)
 Criar classes para estruturar o sistema (Produto, ItemPedido e Pedido)
@@ -97,6 +103,7 @@ Centralizar o cálculo do total em uma única função
 Organizar o código em múltiplos arquivos
 Melhorar nomes de funções e variáveis
 Preparar o sistema para aplicação de padrões de projeto
+
 Parte 7 – Refatoração
 Durante a refatoração do sistema foram realizadas melhorias estruturais com o objetivo de aumentar a organização, reduzir o acoplamento e melhorar a manutenção do código.
 As principais alterações foram:
@@ -114,6 +121,7 @@ Organização do código:
 O sistema passou a ser dividido em múltiplos arquivos, facilitando a leitura e manutenção.
 Manutenção do sistema funcional:
 O sistema permaneceu funcionando após as alterações, conforme exigido.
+
 Parte 8 – Aplicação de Padrões de Projeto
 Factory:
 O padrão Factory foi aplicado na criação de produtos por meio da classe ProdutoFactory.
@@ -127,5 +135,6 @@ Onde foi aplicado:
 No controle do pedido do sistema.
 Por que foi utilizado:
 Para garantir que exista apenas uma instância do pedido durante toda a execução, evitando inconsistências e centralizando o controle dos dados.
+
 Conclusão
 Com a refatoração e a aplicação dos padrões de projeto, o sistema passou a apresentar melhor organização, menor acoplamento, maior coesão e maior facilidade de manutenção, aproximando-se de boas práticas de desenvolvimento de software.
