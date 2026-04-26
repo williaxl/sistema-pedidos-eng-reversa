@@ -11,6 +11,18 @@ class ItemPedido {
         $this->preco = $preco;
     }
 
+    public function getProduto() {
+        return $this->produto;
+    }
+
+    public function getQuantidade() {
+        return $this->quantidade;
+    }
+
+    public function getPreco() {
+        return $this->preco;
+    }
+
     public function getSubtotal() {
         return $this->quantidade * $this->preco;
     }
