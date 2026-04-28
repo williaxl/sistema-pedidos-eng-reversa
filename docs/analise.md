@@ -8,23 +8,23 @@ Engenharia Reversa e Análise de Design de Software
 
 ## Parte 1 – Compreensão do Sistema
 
-O sistema tem como objetivo gerenciar pedidos de uma pastelaria, permitindo ao usuário selecionar produtos, informar a quantidade e visualizar o total da compra. O sistema possui frontend em HTML/CSS/JavaScript e backend em PHP, comunicando-se via API REST.
+O sistema tem como objetivo gerenciar pedidos da pizzaria Tropykaly, permitindo ao usuário navegar por categorias de produtos, informar a quantidade e visualizar o total da compra com taxa de entrega. O sistema possui frontend em HTML/CSS/JavaScript e backend em PHP, comunicando-se via API REST.
 
 As principais funcionalidades do sistema são:
 
-- Adicionar produtos ao pedido
+- Adicionar produtos ao pedido (Pizzas, Lanches, Bebidas)
 - Listar os itens adicionados
-- Calcular o valor total
+- Calcular o valor total com taxa de entrega
 - Aplicar desconto ao finalizar o pedido
 - Enviar o resumo do pedido via WhatsApp
 - Armazenar o pedido entre requisições utilizando sessão PHP
 
 A interação do usuário ocorre por meio de:
 
-- Um seletor de produtos
+- Um seletor de produtos por categoria
 - Um campo de entrada para quantidade
 - Botões para adicionar itens, finalizar o pedido e enviar via WhatsApp
-- Visualização dinâmica da lista de itens e do total
+- Visualização dinâmica da lista de itens, subtotal, taxa de entrega e total
 
 ---
 
@@ -43,7 +43,8 @@ A interação do usuário ocorre por meio de:
 
 ### Dados manipulados
 - `itens`: array de objetos representando os itens do pedido
-- `total`: valor numérico do total
+- `total`: valor numérico do subtotal
+- `taxa`: taxa de entrega fixa de R$ 5,00
 
 Cada item possui:
 - `produto`
@@ -96,7 +97,7 @@ O sistema possui arquitetura em camadas, separando frontend, backend e modelos d
 - Métodos: `getInstance()`, `getPedido()`, `adicionar()`, `limpar()`
 
 **ProdutoFactory**
-- Responsável pela criação de objetos do tipo Produto
+- Responsável pela criação de objetos do tipo Produto (Pizza, Lanche, Bebida)
 
 **PedidoController**
 - Métodos: `listar()`, `adicionar()`, `finalizar()`
@@ -144,6 +145,7 @@ O pedido é mantido entre requisições por meio de sessão PHP (`$_SESSION`), u
 - Implementar remoção de itens individuais do pedido
 - Separar o número do WhatsApp em configuração externa
 - Adicionar tratamento de erros mais robusto no frontend
+- Tornar a taxa de entrega dinâmica por região
 
 ---
 
@@ -159,6 +161,7 @@ As principais alterações foram:
 - **Persistência via sessão PHP**: os dados do pedido passaram a ser mantidos entre requisições utilizando `$_SESSION`
 - **Separação de responsabilidades**: a lógica de negócio foi separada da manipulação do DOM
 - **Organização em camadas**: o backend foi dividido em `controllers`, `services`, `models` e `repositories`
+- **Adição de taxa de entrega**: o sistema passou a calcular e exibir a taxa de entrega separadamente do subtotal
 - **Manutenção do sistema funcional**: o sistema permaneceu funcionando após as alterações
 
 ---
@@ -168,7 +171,7 @@ As principais alterações foram:
 ### Factory
 O padrão Factory foi aplicado na criação de produtos por meio da classe `ProdutoFactory`.
 
-**Onde foi aplicado:** Na criação de objetos do tipo `Produto`.
+**Onde foi aplicado:** Na criação de objetos do tipo `Produto` (Pizza, Lanche, Bebida).
 
 **Por que foi utilizado:** Centralizou a criação dos produtos e a definição de preços, eliminando estruturas condicionais espalhadas no código e facilitando a adição de novos produtos.
 
@@ -187,7 +190,7 @@ O padrão Observer foi aplicado por meio das classes `Subject` e `LoggerObserver
 **Por que foi utilizado:** Para notificar observadores sobre eventos do pedido sem acoplar diretamente o controller à lógica de log.
 
 ### Strategy
-O padrão Strategy foi aplicado por meio da classe `SemDesconto`.
+O padrão Strategy foi aplicado por meio da classe `DescontoProgressivo`.
 
 **Onde foi aplicado:** No cálculo do desconto durante a finalização do pedido.
 

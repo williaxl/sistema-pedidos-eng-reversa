@@ -1,4 +1,4 @@
-# Sistema de Pedidos - Engenharia Reversa
+# Tropykaly - Sistema de Pedidos
 
 Projeto desenvolvido para a disciplina de Arquitetura de Sistemas (IFCE - Campus Boa Viagem).
 
@@ -6,7 +6,7 @@ Projeto desenvolvido para a disciplina de Arquitetura de Sistemas (IFCE - Campus
 
 ## Objetivo
 
-O sistema tem como objetivo gerenciar pedidos de uma pastelaria, permitindo a seleção de produtos, cálculo automático de valores e finalização do pedido.
+O sistema tem como objetivo gerenciar pedidos da pizzaria Tropykaly, permitindo a navegação por categorias de produtos (Pizzas, Lanches, Bebidas), cálculo automático de valores com taxa de entrega e finalização do pedido.
 
 O projeto foi evoluído a partir de uma implementação simples em JavaScript para uma arquitetura em camadas com backend em PHP, aplicando padrões de projeto e separação de responsabilidades.
 
@@ -49,19 +49,20 @@ O frontend se comunica com o backend por meio de requisições HTTP (API PHP cen
 - Uso de padrões de projeto
 - Persistência de dados via sessão PHP
 - Comunicação via API
+- Taxa de entrega calculada automaticamente
 
 ---
 
 ## Padrões de Projeto Aplicados
 
 ### Factory
-Responsável pela criação centralizada de objetos Produto.
+Responsável pela criação centralizada de objetos Produto (Pizza, Lanche, Bebida).
 
 ### Singleton
 Garante uma única instância do Pedido durante a execução da aplicação, persistida via sessão PHP.
 
 ### Strategy
-Define a lógica de aplicação de descontos no pedido.
+Define a lógica de aplicação de descontos progressivos no pedido.
 
 ### Observer
 Implementado com Subject e LoggerObserver para registrar eventos ao finalizar pedidos.
@@ -73,10 +74,11 @@ Responsável pela persistência e manipulação dos dados armazenados.
 
 ## Funcionalidades
 
-- Adicionar produtos ao pedido
+- Adicionar produtos ao pedido (Pizza, Lanche, Bebida)
 - Listar itens adicionados
-- Calcular total automaticamente
-- Aplicar desconto na finalização
+- Calcular subtotal automaticamente
+- Calcular taxa de entrega (R$ 5,00)
+- Aplicar desconto progressivo na finalização
 - Finalizar pedido
 - Enviar resumo do pedido via WhatsApp
 - Persistência de dados via sessão PHP
