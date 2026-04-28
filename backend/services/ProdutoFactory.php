@@ -7,17 +7,14 @@ class ProdutoFactory {
     public static function criar($tipo) {
 
         switch ($tipo) {
-            case "pastel":
-                return new Produto("Pastel", 5);
+            case "pizza":
+                return new Produto("Pizza", 35);
 
-            case "caldo":
-                return new Produto("Caldo", 7);
+            case "lanche":
+                return new Produto("Lanche", 20);
 
-            case "refrigerante":
-                return new Produto("Refrigerante", 4);
-
-            case "suco":
-                return new Produto("Suco", 6);
+            case "bebida":
+                return new Produto("Bebida", 8);
 
             default:
                 return new Produto("Desconhecido", 0);
