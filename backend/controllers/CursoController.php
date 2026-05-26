@@ -34,3 +34,9 @@ class CursoController
         return "Curso selecionado: ID " . $id;
     }
 }
+
+    // Exercício 5: Receber dados via POST (Simulado)
+    public function store($nome) 
+    {
+        return "Curso cadastrado com sucesso: " . $nome;
+    }
